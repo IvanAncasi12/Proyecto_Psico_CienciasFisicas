@@ -10,12 +10,13 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [logoUrl, setLogoUrl] = useState('')
   const [nombreInstitucion, setNombreInstitucion] = useState('Carrera')
-  const [colores, setColores] = useState({ primario: '#DC0E10', secundario: '#E9C202' })
+  const [colores, setColores] = useState({ primario: '#6366f1', secundario: '#14b8a6' })
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const id = process.env.NEXT_PUBLIC_INSTITUCION_ID || '22'
+        const id = process.env.NEXT_PUBLIC_INSTITUCION_ID || '45'
         const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://apiadministrador.upea.bo'
         const res = await apiClient.get(`/institucionesPrincipal/${id}`)
         const data = res.data?.Descripcion
@@ -29,13 +30,21 @@ export default function Header() {
         const cols = data?.colorinstitucion?.[0]
         if (cols) {
           setColores({
-            primario: cols.color_primario || '#DC0E10',
-            secundario: cols.color_secundario || '#E9C202'
+            primario: cols.color_primario || '#6366f1',
+            secundario: cols.color_secundario || '#14b8a6'
           })
         }
       } catch (error) { console.warn('Error Header:', error) }
     }
     fetchData()
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
@@ -51,18 +60,12 @@ export default function Header() {
         setActiveDropdown(null)
       }
     }
-    
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(prev => !prev)
-  }
-
-  const toggleDropdown = (menu: string) => {
-    setActiveDropdown(prev => prev === menu ? null : menu)
-  }
+  const toggleMobileMenu = () => setMobileMenuOpen(prev => !prev)
+  const toggleDropdown = (menu: string) => setActiveDropdown(prev => prev === menu ? null : menu)
 
   const menus = [
     { key: 'carrera', label: 'Carrera', items: [
@@ -88,21 +91,22 @@ export default function Header() {
   ]
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <nav className={styles.navContainer}>
         
+        {/* Logo */}
         <Link href="/" className={styles.logoSection}>
           <div className={styles.logoWrapper}>
-            <div className={styles.logoContainer}>
-              <img 
-                src={logoUrl || 'https://ui-avatars.com/api/?name=UPEA&background=DC0E10&color=fff&size=128'} 
-                alt="Logo" 
-              />
-            </div>
+            <img 
+              src={logoUrl || 'https://ui-avatars.com/api/?name=UPEA&background=6366f1&color=fff&size=128'} 
+              alt="Logo" 
+              className={styles.logo}
+            />
           </div>
           <span className={styles.institutionName}>{nombreInstitucion}</span>
         </Link>
 
+        {/* Desktop Nav */}
         <div className={styles.desktopNav}>
           <Link href="/" className={styles.navLink}>Inicio</Link>
           
@@ -110,11 +114,11 @@ export default function Header() {
             <div key={menu.key} className={styles.dropdownWrapper}>
               <button 
                 onClick={() => toggleDropdown(menu.key)} 
-                className={`${styles.dropdownButton} ${activeDropdown === menu.key ? 'active' : ''}`}
+                className={`${styles.navLink} ${styles.dropdownBtn}`}
                 type="button"
               >
                 {menu.label}
-                <svg className={styles.dropdownArrow} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`${styles.arrow} ${activeDropdown === menu.key ? styles.active : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -122,7 +126,7 @@ export default function Header() {
               {activeDropdown === menu.key && (
                 <div className={styles.dropdownMenu}>
                   {menu.items.map((item, idx) => (
-                    <Link key={idx} href={item.href} className={styles.dropdownItem}>
+                    <Link key={idx} href={item.href} className={styles.dropdownItem} onClick={() => setActiveDropdown(null)}>
                       {item.label}
                     </Link>
                   ))}
@@ -135,6 +139,7 @@ export default function Header() {
           <Link href="/contacto" className={styles.navLink}>Contacto</Link>
         </div>
 
+        {/* Login Button */}
         <div className={styles.loginSection}>
           <a
             href="https://servicioadministrador.upea.bo"
@@ -142,10 +147,11 @@ export default function Header() {
             rel="noopener noreferrer"
             className={styles.loginBtn}
           >
-            Iniciar Sesión
+            Ingresar
           </a>
         </div>
 
+        {/* Mobile Button */}
         <button 
           type="button"
           className={styles.mobileMenuBtn} 
@@ -163,158 +169,40 @@ export default function Header() {
         </button>
       </nav>
 
-      <div 
-        className={styles.mobileMenu}
-        style={{
-          display: mobileMenuOpen ? 'block' : 'none',
-          position: 'absolute',
-          top: '100%',
-          left: 0,
-          right: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.98)',
-          zIndex: 40,
-          padding: '1rem 0',
-          borderBottom: '2px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.4)',
-          maxHeight: '80vh',
-          overflowY: 'auto'
-        }}
-      >
-        <Link 
-          href="/" 
-          className={styles.mobileLink}
-          onClick={() => setMobileMenuOpen(false)}
-          style={{
-            display: 'block',
-            padding: '1rem 1.5rem',
-            color: '#fff',
-            fontSize: '1rem',
-            fontWeight: 600,
-            borderBottom: '1px solid rgba(255,255,255,0.1)'
-          }}
-        >
-          Inicio
-        </Link>
-
-        {menus.map((menu) => (
-          <div key={menu.key} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-            <button
-              type="button"
-              onClick={() => toggleDropdown(menu.key)}
-              style={{
-                width: '100%',
-                padding: '1rem 1.5rem',
-                background: 'none',
-                border: 'none',
-                color: '#fff',
-                fontSize: '0.95rem',
-                fontWeight: 600,
-                textAlign: 'left',
-                cursor: 'pointer',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}
-            >
-              {menu.label}
-              <svg 
-                className={`transition-transform ${activeDropdown === menu.key ? 'rotate-180' : ''}`}
-                width="16" 
-                height="16" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className={styles.mobileMenu}>
+          <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Inicio</Link>
+          {menus.map((menu) => (
+            <div key={menu.key}>
+              <button
+                type="button"
+                className={styles.mobileSection}
+                onClick={() => toggleDropdown(menu.key)}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            
-            {activeDropdown === menu.key && (
-              <div style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                {menu.items.map((item, idx) => (
-                  <Link
-                    key={idx}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    style={{
-                      display: 'block',
-                      padding: '0.875rem 1.5rem 0.875rem 2.5rem',
-                      color: 'rgba(255,255,255,0.9)',
-                      fontSize: '0.9rem',
-                      borderBottom: '1px solid rgba(255,255,255,0.05)',
-                      transition: 'all 0.2s'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'
-                      e.currentTarget.style.color = '#fff'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'transparent'
-                      e.currentTarget.style.color = 'rgba(255,255,255,0.9)'
-                    }}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            )}
+                {menu.label}
+                <svg className={`transition-transform ${activeDropdown === menu.key ? 'rotate-180' : ''}`} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {activeDropdown === menu.key && (
+                <div className={styles.mobileSubmenu}>
+                  {menu.items.map((item, idx) => (
+                    <Link key={idx} href={item.href} className={styles.mobileSublink} onClick={() => setMobileMenuOpen(false)}>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+          <Link href="/enlaces" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Enlaces</Link>
+          <Link href="/contacto" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>Contacto</Link>
+          <div className={styles.mobileLogin}>
+            <a href="https://servicioadministrador.upea.bo" target="_blank" rel="noopener noreferrer">Iniciar Sesión</a>
           </div>
-        ))}
-
-        <Link 
-          href="/enlaces" 
-          className={styles.mobileLink}
-          onClick={() => setMobileMenuOpen(false)}
-          style={{
-            display: 'block',
-            padding: '1rem 1.5rem',
-            color: '#fff',
-            fontSize: '1rem',
-            fontWeight: 600,
-            borderBottom: '1px solid rgba(255,255,255,0.1)'
-          }}
-        >
-          Enlaces
-        </Link>
-        
-        <Link 
-          href="/contacto" 
-          className={styles.mobileLink}
-          onClick={() => setMobileMenuOpen(false)}
-          style={{
-            display: 'block',
-            padding: '1rem 1.5rem',
-            color: '#fff',
-            fontSize: '1rem',
-            fontWeight: 600,
-            borderBottom: '1px solid rgba(255,255,255,0.1)'
-          }}
-        >
-          Contacto
-        </Link>
-
-        <div style={{ padding: '1.5rem 1.5rem 0.5rem' }}>
-          <a
-            href="https://servicioadministrador.upea.bo"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'block',
-              padding: '1rem',
-              background: `linear-gradient(135deg, ${colores.secundario}, ${colores.secundario}cc)`,
-              color: '#000',
-              textAlign: 'center',
-              borderRadius: '0.75rem',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
-            }}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Iniciar Sesión
-          </a>
         </div>
-      </div>
+      )}
     </header>
   )
 }
