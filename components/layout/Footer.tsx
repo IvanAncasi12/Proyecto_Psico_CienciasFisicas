@@ -43,8 +43,7 @@ export default function Footer() {
       style={{
         background: `linear-gradient(180deg, ${colorPrimario} 0%, ${colorPrimario}dd 50%, ${colorSecundario} 100%)`,
       }}
-    >
-      {/* Formas decorativas animadas */}
+    > 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
           className="absolute -top-40 -right-40 w-80 h-80 rounded-full opacity-20 animate-pulse"
@@ -61,8 +60,7 @@ export default function Footer() {
           }} />
         </div>
       </div>
-
-      {/* Línea superior brillante */}
+ 
       <div className="absolute top-0 left-0 right-0 h-2"
         style={{
           background: `linear-gradient(90deg, transparent, ${colorSecundario}, ${colorPrimario}, ${colorSecundario}, transparent)`,
@@ -71,8 +69,7 @@ export default function Footer() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        
-        {/* Header del Footer */}
+         
         <div className="text-center mb-12">
           <div 
             className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl mb-6 backdrop-blur-sm"
@@ -85,11 +82,9 @@ export default function Footer() {
             </div>
           </div>
         </div>
-
-        {/* Grid Principal */}
+ 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          
-          {/* Columna 1: Info */}
+           
           <div className="lg:col-span-1">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
               <h4 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
@@ -101,8 +96,7 @@ export default function Footer() {
                   ? footerData.institucion_mision.replace(/<[^>]*>/g, '').slice(0, 120) + '...'
                   : 'Formando profesionales con excelencia académica.'}
               </p>
-              
-              {/* Redes Sociales */}
+               
               {!loading && footerData?.socialLinks && (
                 <div className="flex gap-3">
                   {footerData.socialLinks.facebook && (
@@ -127,8 +121,7 @@ export default function Footer() {
               )}
             </div>
           </div>
-
-          {/* Columna 2: Enlaces */}
+ 
           <div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
               <h4 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
@@ -148,8 +141,7 @@ export default function Footer() {
               </ul>
             </div>
           </div>
-
-          {/* Columna 3: Recursos */}
+ 
           <div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
               <h4 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
@@ -174,8 +166,7 @@ export default function Footer() {
               </ul>
             </div>
           </div>
-
-          {/* Columna 4: Contacto */}
+ 
           <div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
               <h4 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
@@ -201,8 +192,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-
-        {/* Bottom Bar */}
+ 
         <div className="border-t border-white/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-white/80 text-sm text-center md:text-left">
@@ -212,12 +202,7 @@ export default function Footer() {
             <div className="flex gap-6 text-sm">
               <Link href="#" className="text-white/80 hover:text-white transition-colors">Privacidad</Link>
               <Link href="#" className="text-white/80 hover:text-white transition-colors">Términos</Link>
-            </div>
-          </div>
-          
-          {/* Developer Credit */}
-          <div className="mt-6 text-center">
-            <a
+              <a
               href="https://www.linkedin.com/in/ivan-ancasi-tumiri-a58764393"
               target="_blank"
               rel="noopener noreferrer"
@@ -229,6 +214,7 @@ export default function Footer() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6"/>
               </svg>
             </a>
+            </div>
           </div>
         </div>
       </div>
