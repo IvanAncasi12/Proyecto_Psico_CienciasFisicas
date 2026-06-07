@@ -1,17 +1,45 @@
-Project setup
+# Instalación y Ejecución
+
+* Instalar dependencias
+
+```bash
 npm install
+```
 
-Id Carrera/Institudion
+* Configurar variables de entorno
+
+```bash
 cp .env.copy .env
+```
 
-Lints and fixes files
-npm run lint
+* Editar el archivo `.env` y configurar el ID de la Carrera/Institución correspondiente.
 
-Compiles and hot-reloads for development
+* Ejecutar el proyecto en modo desarrollo
+
+```bash
 npm run dev
+```
 
-Lints and fixes files
+* Verificar la calidad del código
+
+```bash
 npm run lint
+```
 
-Compiles and minifies for production
+* Generar la compilación para producción
+
+```bash
 npm run build
+```
+
+* Ejecutar la versión de producción
+
+```bash
+npm start
+```
+
+* Verificar vulnerabilidades de dependencias
+
+```bash
+pnpm audit
+```

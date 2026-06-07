@@ -46,7 +46,7 @@ export default function Header() {
         }
 
         if (data?.institucion_nombre) {
-          setNombreInstitucion(`Carrera de ${data.institucion_nombre}`)
+          setNombreInstitucion(`${data.institucion_nombre}`)
         }
 
         const cols = data?.colorinstitucion?.[0]
