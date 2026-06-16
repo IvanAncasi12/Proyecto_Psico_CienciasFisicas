@@ -199,21 +199,23 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} UPEA - Carrera de {nombreCarrera}. Todos los derechos reservados.
             </p>
             
-            <div className="flex gap-6 text-sm">
-              <Link href="#" className="text-white/80 hover:text-white transition-colors">Privacidad</Link>
-              <Link href="#" className="text-white/80 hover:text-white transition-colors">Términos</Link>
+            <div className="flex items-center gap-3">
               <a
-              href="https://www.linkedin.com/in/ivan-ancasi-tumiri-a58764393"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 transition-all hover:scale-110 group"
-            >
-              <span className="font-bold text-white group-hover:text-yellow-300 transition-colors">I.A.T.</span>
-              <span className="text-white/80 group-hover:text-white transition-colors">Desarrollador</span>
-              <svg className="w-4 h-4 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-              </svg>
-            </a>
+                href="https://utic.upea.bo/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group"
+              >
+                <img
+                  src="/LOGOUTIC.png"
+                  alt="U-TIC"
+                  className="w-10 h-10 rounded-full object-cover border border-slate-700 hover:scale-110 transition-transform duration-300"
+                />
+              </a>
+
+              <p className="flex items-center gap-1 text-slate-500">
+                IAT U - TIC
+              </p>
             </div>
           </div>
         </div>
